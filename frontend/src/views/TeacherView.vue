@@ -6,25 +6,24 @@
 </template>
 
 <script>
-import axios from "axios";
+import { fetchList } from "@/api/teacher";
 export default {
   name: "TeacherView",
   data() {
     return {
-      msg: "Hello, this is teacher page!",
+      msg: "",
     };
   },
   methods: {
-    getRes() {
-      const path = "http://localhost:8900/teacher";
-      axios.get(path).then((res) => {
-        console.log(res.data);
+    teacherApi() {
+      fetchList().then((res) => {
+        console.log(res);
         this.msg = res.data;
       });
     },
   },
   created() {
-    this.getRes();
+    this.teacherApi();
   },
 };
 </script>
