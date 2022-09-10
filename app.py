@@ -14,9 +14,9 @@ def hello_world():  # put application's code here
     return 'Hello World!'
 
 
-@app.route('/shark', methods=['GET'])
+@app.route('/teacher', methods=['GET'])
 def shark():
-    return "This is Shark"
+    return "This is a message for teacher from flask backend"
 
 
 if __name__ == '__main__':

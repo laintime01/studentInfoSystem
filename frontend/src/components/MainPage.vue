@@ -2,10 +2,12 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <p>
-      For a guide and recipes on how to configure / customize this project,<br />
+      This is a Full-Stack project to create a Student information system using
+      VueJs for frontend UI and Flask for the backend server and Flask Rest API
+      to connect to the frontend,<br />
       check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
-        >vue-cli documentation</a
+      <a href="https://www.haoo.tech" target="_blank" rel="noopener"
+        >Hao's Page</a
       >.
     </p>
     <h3>Installed CLI Plugins</h3>
@@ -96,7 +98,7 @@
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: "MainPage",
   props: {
     msg: String,
   },
