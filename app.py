@@ -14,5 +14,10 @@ def hello_world():  # put application's code here
     return 'Hello World!'
 
 
+@app.route('/shark', methods=['GET'])
+def shark():
+    return "This is Shark"
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host="localhost", port=8900)
