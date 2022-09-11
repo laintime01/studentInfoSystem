@@ -109,15 +109,13 @@
               type="text"
               v-model="addTeacherForm.phone"
               required
-              placeholder="Enter Name"
+              placeholder="Enter Phone Number"
             >
             </b-form-input>
           </b-form-group>
           <!--  Buttons: submit and reset-->
-          <button type="submit" @click="onSubmit" variant="primary">
-            Submit
-          </button>
-          <button type="reset">Reset</button>
+          <b-button type="submit" variant="outline-info">Submit</b-button>
+          <b-button type="reset" variant="outline-danger">Reset</b-button>
         </b-form>
       </b-modal>
     </div>
@@ -143,16 +141,13 @@ export default {
   methods: {
     sloganApi() {
       fetchSlogan().then((res) => {
-        console.log(res);
         this.msg = res.data;
       });
     },
     getTeachersList() {
       fetchList()
         .then((res) => {
-          console.log(res);
           this.teachers = res.data.teachers;
-          console.log(this.teachers);
         })
         .catch((err) => {
           console.log(err);
@@ -161,6 +156,7 @@ export default {
     addTeacher(payLoad) {
       addTeacher(payLoad)
         .then(() => {
+          console.log("then!");
           this.getTeachersList();
         })
         .catch((err) => {
@@ -183,6 +179,7 @@ export default {
         subject: this.addTeacherForm.subject,
         phone: this.addTeacherForm.phone,
       };
+      console.log("payload" + payLoad);
       this.addTeacher(payLoad);
       this.initForm();
     },

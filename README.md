@@ -4,4 +4,5 @@ STEPS
 3 Use VUE router to created routers  
 4 Bootstrap for styling and for 2 modals  
 
+npm install bootstrap@4.6.0 --save 
 npm install bootstrap-vue@2.21.2 --save

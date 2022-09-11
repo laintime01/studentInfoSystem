@@ -45,17 +45,19 @@ teachers = [
 def handle_teachers_info():
     response_object = {'status': 'success'}
     if request.method == "POST":
+        print(request)
         post_data = request.get_json()
+        print(post_data.get('id'))
         teachers.append({
-            'id' : str(post_data.get('id')),
-            'name':str(post_data.get('name')),
-            'subject':str(post_data.get('subject')),
-            'phone':str(post_data.get('phone'))}
+            "id" : post_data.get('id'),
+            "name":post_data.get('name'),
+            "subject":post_data.get('subject'),
+            "phone":post_data.get('phone')}
         )
         response_object['message'] = 'Teacher information added'
     else:
         response_object['teachers'] = teachers
-        return jsonify(response_object)
+    return jsonify(response_object)
 
 
 if __name__ == '__main__':

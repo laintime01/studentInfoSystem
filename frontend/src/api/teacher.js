@@ -16,10 +16,10 @@ export function fetchList(query) {
   });
 }
 
-export function addTeacher(params) {
+export function addTeacher(data) {
   return request({
     url: "/teachers",
     method: "post",
-    params,
+    data,
   });
 }
