@@ -45,9 +45,7 @@ teachers = [
 def handle_teachers_info():
     response_object = {'status': 'success'}
     if request.method == "POST":
-        print(request)
         post_data = request.get_json()
-        print(post_data.get('id'))
         teachers.append({
             "id" : post_data.get('id'),
             "name":post_data.get('name'),

@@ -52,10 +52,14 @@
         </div>
       </div>
       <!-- First Modal-->
+      <!-- hide-backdrop : hide black background and show the original page -->
+      <!-- hide-footer: hide the default OK and Cancel button -->
       <b-modal
         ref="addTeacherModal"
         id="teacher-modal"
         title="Add a new teacher"
+        hide-backdrop
+        hide-footer
       >
         <b-form @submit="onSubmit" @reset="onReset" class="w-100">
           <b-form-group id="form-id-group" label="ID" label-for="form-id-input">
@@ -113,9 +117,10 @@
             >
             </b-form-input>
           </b-form-group>
+          <br />
           <!--  Buttons: submit and reset-->
           <b-button type="submit" variant="outline-info">Submit</b-button>
-          <b-button type="reset" variant="outline-danger">Reset</b-button>
+          <b-button type="reset" variant="outline-danger"> Reset </b-button>
         </b-form>
       </b-modal>
     </div>
