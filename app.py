@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import uuid
 
 app = Flask(__name__)
 
@@ -52,7 +53,7 @@ def handle_teachers_info():
             "subject":post_data.get('subject'),
             "phone":post_data.get('phone')}
         )
-        response_object['message'] = 'Teacher information added'
+        response_object['message'] = post_data.get('name') + ' information added'
     else:
         response_object['teachers'] = teachers
     return jsonify(response_object)

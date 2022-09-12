@@ -12,6 +12,11 @@
         <div class="col-sm-12">
           <h1>Teacher Information</h1>
           <p>{{ msg }}</p>
+          <!-- Alert after add teacher -->
+          <b-alert variant="success" v-if="showMessage" show
+            >{{ message }}
+          </b-alert>
+          <!--v-b-modal.teacher-modal: bind this button to modal-->
           <button
             type="button"
             class="btn btn-success"
@@ -135,6 +140,7 @@ export default {
     return {
       msg: "",
       teachers: "",
+      showMessage: false,
       addTeacherForm: {
         id: "",
         name: "",
@@ -143,12 +149,14 @@ export default {
       },
     };
   },
+  message: "",
   methods: {
     sloganApi() {
       fetchSlogan().then((res) => {
         this.msg = res.data;
       });
     },
+
     getTeachersList() {
       fetchList()
         .then((res) => {
@@ -158,24 +166,27 @@ export default {
           console.log(err);
         });
     },
+
     addTeacher(payLoad) {
       addTeacher(payLoad)
-        .then(() => {
-          console.log("then!");
+        .then((res) => {
           this.getTeachersList();
+          this.message = res.data.message;
+          this.showMessage = true;
         })
         .catch((err) => {
           console.log(err);
         });
     },
+
     initForm() {
       this.addTeacherForm.id = "";
       this.addTeacherForm.name = "";
       this.addTeacherForm.subject = "";
       this.addTeacherForm.phone = "";
     },
+
     onSubmit(e) {
-      console.log("submitted");
       e.preventDefault();
       this.$refs.addTeacherModal.hide();
       const payLoad = {
@@ -184,12 +195,15 @@ export default {
         subject: this.addTeacherForm.subject,
         phone: this.addTeacherForm.phone,
       };
-      console.log("payload" + payLoad);
       this.addTeacher(payLoad);
       this.initForm();
     },
-    onReset() {
-      console.log("reset");
+
+    onReset(e) {
+      // prevent default behavior of the browser
+      e.preventDefault();
+      this.$refs.addTeacherModal.hide();
+      this.initForm();
     },
   },
   created() {
