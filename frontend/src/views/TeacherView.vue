@@ -35,6 +35,7 @@
                 <th scope="col">Name</th>
                 <th scope="col">Subject</th>
                 <th scope="col">Phone</th>
+                <th scope="col">Act</th>
               </tr>
             </thead>
             <tbody>
@@ -42,9 +43,17 @@
                 <td>{{ teacher.id }}</td>
                 <td>{{ teacher.name }}</td>
                 <td>{{ teacher.subject }}</td>
+                <td>{{ teacher.phone }}</td>
                 <td>
                   <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-info">Update</button>
+                    <button
+                      type="button"
+                      class="btn btn-info"
+                      v-b-modal.teacher-update-modal
+                      @click="editTeacher(teacher)"
+                    >
+                      Update
+                    </button>
                     <button type="button" class="btn btn-danger">Delete</button>
                   </div>
                 </td>
@@ -56,7 +65,7 @@
           </footer>
         </div>
       </div>
-      <!-- First Modal-->
+      <!-- Start First Modal-->
       <!-- hide-backdrop : hide black background and show the original page -->
       <!-- hide-footer: hide the default OK and Cancel button -->
       <b-modal
@@ -117,12 +126,78 @@
           <b-button type="reset" variant="outline-danger"> Reset </b-button>
         </b-form>
       </b-modal>
+      <!--  End of First modal      -->
+      <!--      Start of Update Modal-->
+      <b-modal
+        ref="updateTeacherModal"
+        id="teacher-update-modal"
+        title="Update a teacher"
+        hide-backdrop
+        hide-footer
+      >
+        <b-form @submit="onSubmitUpdate" @reset="onResetUpdate" class="w-100">
+          <b-form-group
+            id="form-name-group"
+            label="Name"
+            label-for="form-name-input"
+          >
+            <b-form-input
+              id="form-name-input"
+              type="text"
+              v-model="editForm.name"
+              required
+              placeholder="Enter Name"
+            >
+            </b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="form-subject-group"
+            label="Subject"
+            label-for="form-subject-input"
+          >
+            <b-form-input
+              id="form-subject-input"
+              type="text"
+              v-model="editForm.subject"
+              required
+              placeholder="Enter Subject"
+            >
+            </b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="form-phone-group"
+            label="Phone"
+            label-for="form-phone-input"
+          >
+            <b-form-input
+              id="form-phone-input"
+              type="text"
+              v-model="editForm.phone"
+              required
+              placeholder="Enter Phone Number"
+            >
+            </b-form-input>
+          </b-form-group>
+          <br />
+          <!--  Buttons: submit and reset-->
+          <b-button type="submit" variant="outline-info">Submit</b-button>
+          <b-button type="reset" variant="outline-danger"> Reset </b-button>
+        </b-form>
+      </b-modal>
+      <!--      End of Update Modal-->
     </div>
   </div>
 </template>
 
 <script>
-import { fetchSlogan, fetchList, addTeacher } from "@/api/teacher";
+import {
+  fetchSlogan,
+  fetchList,
+  addTeacher,
+  updateTeacher,
+} from "@/api/teacher";
 export default {
   name: "TeacherView",
   data() {
@@ -131,6 +206,12 @@ export default {
       teachers: "",
       showMessage: false,
       addTeacherForm: {
+        id: "",
+        name: "",
+        subject: "",
+        phone: "",
+      },
+      editForm: {
         id: "",
         name: "",
         subject: "",
@@ -194,7 +275,35 @@ export default {
       this.$refs.addTeacherModal.hide();
       this.initForm();
     },
+
+    editTeacher(teacher) {
+      this.editForm = teacher;
+    },
+
+    onSubmitUpdate() {
+      console.log("on submit update");
+    },
+
+    onResetUpdate() {
+      console.log("on reset update");
+    },
+
+    updateTeacher(payLoad) {
+      console.log(payLoad);
+      updateTeacher()
+        .then((res) => {
+          console.log(res);
+          this.getTeachersList();
+          this.message = "Teacher info Updated!";
+          this.showMessage = true;
+        })
+        .catch((err) => {
+          console.log(err);
+          this.getTeachersList();
+        });
+    },
   },
+
   created() {
     this.sloganApi();
     this.getTeachersList();

@@ -23,3 +23,11 @@ export function addTeacher(data) {
     data,
   });
 }
+
+export function updateTeacher(data) {
+  return request({
+    url: "/teachers/id",
+    method: "put",
+    data,
+  });
+}
