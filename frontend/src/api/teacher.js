@@ -24,10 +24,18 @@ export function addTeacher(data) {
   });
 }
 
-export function updateTeacher(data) {
+export function updateTeacher(data, id) {
   return request({
-    url: "/teachers/id",
+    url: "/teachers/" + id,
     method: "put",
+    data,
+  });
+}
+
+export function deleteTeacher(data, id) {
+  return request({
+    url: "/teachers/" + id,
+    method: "delete",
     data,
   });
 }

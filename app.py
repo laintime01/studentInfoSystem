@@ -22,19 +22,19 @@ def teacher_slogan():
 
 teachers = [
     {
-        "id": "100",
+        "id": uuid.uuid4().hex,
         "name": "Mr Li",
         "subject": "Math",
         "phone": "13613239788",
     },
     {
-        "id": "101",
+        "id": uuid.uuid4().hex,
         "name": "Mr Wang",
         "subject": "EN",
         "phone": "13613237397",
     },
     {
-        "id": "102",
+        "id": uuid.uuid4().hex,
         "name": "Mr Ho",
         "subject": "Sports",
         "phone": "13391379173",
@@ -61,12 +61,11 @@ def add_or_fetch_teachers_info():
 
 
 # Del and Update teacher
-@app.route('/teachers/<teacher_id>', methods=['PUT'])
+@app.route('/teachers/<teacher_id>', methods=['PUT', 'DELETE'])
 def del_or_update_teacher(teacher_id):
     response_object = {'status': 'success'}
     if request.method == "PUT":
         post_data = request.get_json()
-        teacher_id = post_data.get('id')
         del_teacher(teacher_id)
         teachers.append({
             "id": uuid.uuid4().hex,
@@ -74,7 +73,10 @@ def del_or_update_teacher(teacher_id):
             "subject": post_data.get('subject'),
             "phone": post_data.get('phone')}
         )
-        response_object['message'] = "Teacher Info Updated"
+        response_object['message'] = post_data.get('name') + "Teacher Info Updated!"
+    if request.method == "DELETE":
+        del_teacher(teacher_id)
+        response_object["message"] = "Successfully Deleted!"
     return jsonify(response_object)
 
 
@@ -83,8 +85,8 @@ def del_teacher(teacher_id):
     for t in teachers:
         if t.get("id") == teacher_id:
             teachers.remove(t)
+            print(str(t) + "removed")
             return True
-
 
 
 if __name__ == '__main__':

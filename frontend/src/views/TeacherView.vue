@@ -54,7 +54,13 @@
                     >
                       Update
                     </button>
-                    <button type="button" class="btn btn-danger">Delete</button>
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      @click="onDeleteTeacher(teacher)"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -197,6 +203,7 @@ import {
   fetchList,
   addTeacher,
   updateTeacher,
+  deleteTeacher,
 } from "@/api/teacher";
 export default {
   name: "TeacherView",
@@ -250,10 +257,12 @@ export default {
     },
 
     initForm() {
-      this.addTeacherForm.id = "";
       this.addTeacherForm.name = "";
       this.addTeacherForm.subject = "";
       this.addTeacherForm.phone = "";
+      this.editForm.name = "";
+      this.editForm.subject = "";
+      this.editForm.phone = "";
     },
 
     onSubmit(e) {
@@ -280,21 +289,43 @@ export default {
       this.editForm = teacher;
     },
 
-    onSubmitUpdate() {
-      console.log("on submit update");
+    onDeleteTeacher(teacher) {
+      this.delTeacher(teacher, teacher.id);
+    },
+
+    onSubmitUpdate(e) {
+      e.preventDefault();
+      this.$refs.updateTeacherModal.hide();
+      const payLoad = {
+        name: this.editForm.name,
+        subject: this.editForm.subject,
+        phone: this.editForm.phone,
+      };
+      this.updateTeacher(payLoad, this.editForm.id);
     },
 
     onResetUpdate() {
-      console.log("on reset update");
+      this.initForm();
     },
 
-    updateTeacher(payLoad) {
-      console.log(payLoad);
-      updateTeacher()
-        .then((res) => {
-          console.log(res);
+    updateTeacher(payLoad, id) {
+      updateTeacher(payLoad, id)
+        .then(() => {
           this.getTeachersList();
           this.message = "Teacher info Updated!";
+          this.showMessage = true;
+        })
+        .catch((err) => {
+          console.log(err);
+          this.getTeachersList();
+        });
+    },
+
+    delTeacher(payLoad, id) {
+      deleteTeacher(payLoad, id)
+        .then(() => {
+          this.getTeachersList();
+          this.message = "Teacher Deleted!";
           this.showMessage = true;
         })
         .catch((err) => {
