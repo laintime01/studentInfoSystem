@@ -67,17 +67,6 @@
         hide-footer
       >
         <b-form @submit="onSubmit" @reset="onReset" class="w-100">
-          <b-form-group id="form-id-group" label="ID" label-for="form-id-input">
-            <b-form-input
-              id="form-id-input"
-              type="text"
-              v-model="addTeacherForm.id"
-              required
-              placeholder="Enter Id"
-            >
-            </b-form-input>
-          </b-form-group>
-
           <b-form-group
             id="form-name-group"
             label="Name"

@@ -42,13 +42,14 @@ teachers = [
 ]
 
 
+# Add and fetch teacher
 @app.route('/teachers', methods=['GET', 'POST'])
-def handle_teachers_info():
+def add_or_fetch_teachers_info():
     response_object = {'status': 'success'}
     if request.method == "POST":
         post_data = request.get_json()
         teachers.append({
-            "id" : post_data.get('id'),
+            "id" : uuid.uuid4().hex,
             "name":post_data.get('name'),
             "subject":post_data.get('subject'),
             "phone":post_data.get('phone')}
@@ -57,6 +58,27 @@ def handle_teachers_info():
     else:
         response_object['teachers'] = teachers
     return jsonify(response_object)
+
+
+# Del and Update teacher
+@app.route('/teachers/<teacher_id>', methods = ['PUT'])
+def del_or_update_teacher(teacher_id):
+    response_object = {'status': 'success'}
+    if request.method == "PUT":
+        post_data = request.get_json()
+        del_teacher(teacher_id)
+        teachers.append({
+            "id": uuid.uuid4().hex,
+            "name": post_data.get('name'),
+            "subject": post_data.get('subject'),
+            "phone": post_data.get('phone')}
+        )
+        response_object['message'] = "Teacher Info Updated"
+    return jsonify(response_object)
+
+
+def del_teacher(teacher_id):
+    print(teacher_id)
 
 
 if __name__ == '__main__':
