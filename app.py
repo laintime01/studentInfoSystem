@@ -2,37 +2,15 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import uuid
 # pip install flask-sqlalchemy
-from flask_sqlalchemy import SQLAlchemy
-from dataclasses import dataclass
+from model import db, Teachers, Students
 
 app = Flask(__name__)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:@localhost/sis_db"
-db = SQLAlchemy(app)
-
-
-# create table teacher
-# Python 3.7+ and Flask 1.1+ can use the built-in dataclasses package
-@dataclass
-class Teachers(db.Model):
-    # table name
-    __tablename__ = 'teacher'
-    id: int
-    name: str
-    subject: str
-    phone: str
-
-    # column
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(16), nullable=False)
-    subject = db.Column(db.String(100), nullable=False)
-    phone = db.Column(db.String(20))
-
-    def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table.columns}
+db.init_app(app)
 
 
 app.config.from_object(__name__)
-
 CORS(app, resource={r"/*": {'origins': "*"}})
 
 
@@ -97,5 +75,6 @@ def del_teacher(teacher_id):
 
 
 if __name__ == '__main__':
-    db.create_all()
     app.run(debug=True, host="localhost", port=8900)
+    with app.app_context():
+        db.create_all()
