@@ -67,7 +67,6 @@ def del_or_update_teacher(teacher_id):
 
 
 def del_teacher(teacher_id):
-    print(teacher_id)
     d_teacher = Teachers.query.filter(Teachers.id == teacher_id).first()
     db.session.delete(d_teacher)
     db.session.commit()
@@ -97,6 +96,31 @@ def add_update_student():
     else:
         res_obj['students'] = Students.query.all()
     return jsonify(res_obj)
+
+def del_student(student_id):
+    d_student = Students.query.filter(Students.id == student_id).first()
+    db.session.delete(d_student)
+    db.session.commit()
+
+
+@app.route('/students/<student_id>', methods=['PUT', 'DELETE'])
+def update_del_student(student_id):
+    res_obj = {'status' : 'success'}
+    if request.method == 'PUT':
+        post_data = request.get_json()
+        Students.query.filter(Students.id == student_id).update({
+            'name': post_data.get('name'),
+            'sex': post_data.get('sex'),
+            'age': post_data.get('age'),
+            'faculty': post_data.get('faculty'),
+        })
+        db.session.commit()
+        res_obj['message'] = post_data.get('name') + "'s information updated!"
+    else:
+        del_student(student_id)
+        res_obj['message'] = "info deleted!"
+    return jsonify(res_obj)
+
 
 
 if __name__ == '__main__':

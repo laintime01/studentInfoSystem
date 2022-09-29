@@ -47,7 +47,7 @@
                     <button
                       type="button"
                       class="btn btn-info"
-                      v-b-modal.teacher-update-modal
+                      v-b-modal.student-update-modal
                       @click="editStudent(student)"
                     >
                       Update
@@ -142,12 +142,94 @@
           <b-button type="reset" variant="outline-danger"> Reset </b-button>
         </b-form>
       </b-modal>
+      <!--end of add modal-->
+      <!--start of update modal-->
+      <b-modal
+        ref="updateStudentModal"
+        id="student-update-modal"
+        title="Update a student"
+        hide-backdrop
+        hide-footer
+      >
+        <b-form @submit="onSubmitUpdate" @reset="onResetUpdate" class="w-100">
+          <b-form-group
+            id="form-name-group"
+            label="Name"
+            label-for="form-name-input"
+          >
+            <b-form-input
+              id="form-name-input"
+              type="text"
+              v-model="editForm.name"
+              required
+              placeholder="Enter Name"
+            >
+            </b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="form-sex-group"
+            label="Sex"
+            label-for="form-sex-input"
+          >
+            <b-form-input
+              id="form-sex-input"
+              type="text"
+              v-model="editForm.sex"
+              required
+              placeholder="Enter Sex"
+            >
+            </b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="form-age-group"
+            label="Age"
+            label-for="form-age-input"
+          >
+            <b-form-input
+              id="form-age-input"
+              type="text"
+              v-model="editForm.age"
+              required
+              placeholder="Enter Age"
+            >
+            </b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="form-faculty-group"
+            label="Faculty"
+            label-for="form-faculty-input"
+          >
+            <b-form-input
+              id="form-faculty-input"
+              type="text"
+              v-model="editForm.faculty"
+              required
+              placeholder="Enter Faculty"
+            >
+            </b-form-input>
+          </b-form-group>
+          <br />
+          <!--  Buttons: submit and reset-->
+          <b-button type="submit" variant="outline-info">Submit</b-button>
+          <b-button type="reset" variant="outline-danger"> Reset </b-button>
+        </b-form>
+      </b-modal>
+      <!--      End of Update Modal-->
     </div>
   </div>
 </template>
 
 <script>
-import { addStudent, fetchSlogan, fetchStudentList } from "@/api/student";
+import {
+  addStudent,
+  deleteStudent,
+  fetchSlogan,
+  fetchStudentList,
+  updateStudent,
+} from "@/api/student";
 
 export default {
   name: "StudentView",
@@ -174,11 +256,11 @@ export default {
     };
   },
   methods: {
-    editStudent() {
-      console.log("edit");
+    editStudent(student) {
+      this.editForm = student;
     },
-    onDeleteStudent() {
-      console.log("delete");
+    onDeleteStudent(student) {
+      this.delStudentFunc(student, student.id);
     },
     initStudentForm() {
       this.addStudentForm.name = "";
@@ -198,7 +280,6 @@ export default {
     fetchStudents() {
       fetchStudentList()
         .then((res) => {
-          console.log(res);
           this.students = res.data.students;
         })
         .catch((error) => {
@@ -208,7 +289,7 @@ export default {
     addStudentFunc(payload) {
       addStudent(payload).then((res) => {
         this.fetchStudents();
-        res.message = this.message;
+        this.message = res.data.message;
         this.showMessage = true;
       });
     },
@@ -226,6 +307,34 @@ export default {
     },
     onReset() {
       console.log("reset");
+    },
+    delStudentFunc(payload, id) {
+      deleteStudent(payload, id).then((res) => {
+        this.fetchStudents();
+        this.message = res.data.message;
+        this.showMessage = true;
+      });
+    },
+    updateStudentFunc(payLoad, id) {
+      updateStudent(payLoad, id).then(() => {
+        this.fetchStudents();
+        this.message = "student information updated!";
+        this.showMessage = true;
+      });
+    },
+    onSubmitUpdate(e) {
+      e.preventDefault();
+      this.$refs.updateStudentModal.hide();
+      const payload = {
+        name: this.editForm.name,
+        sex: this.editForm.sex,
+        age: this.editForm.age,
+        faculty: this.editForm.faculty,
+      };
+      this.updateStudentFunc(payload, this.editForm.id);
+    },
+    onResetUpdate() {
+      console.log("11");
     },
   },
   created() {
