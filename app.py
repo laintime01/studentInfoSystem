@@ -9,7 +9,6 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:@localhost/sis_db"
 db.init_app(app)
 
-
 app.config.from_object(__name__)
 CORS(app, resource={r"/*": {'origins': "*"}})
 
@@ -72,6 +71,32 @@ def del_teacher(teacher_id):
     d_teacher = Teachers.query.filter(Teachers.id == teacher_id).first()
     db.session.delete(d_teacher)
     db.session.commit()
+
+
+# Student controllers
+@app.route('/studentslogan', methods=['GET'])
+def get_student_slogan():
+    return "Students information table"
+
+
+@app.route('/students', methods=['GET', 'POST'])
+def add_update_student():
+    res_obj = {'status': 'success'}
+    if request.method == 'POST':
+        try:
+            post_data = request.get_json()
+            new_student = Students(name=post_data.get('name'),
+                                   sex=post_data.get('sex'),
+                                   age=post_data.get('age'),
+                                   faculty=post_data.get('faculty'))
+            db.session.add(new_student)
+            db.session.commit()
+            res_obj['message'] = post_data.get('name') + " added"
+        except Exception as e:
+            print(e)
+    else:
+        res_obj['students'] = Students.query.all()
+    return jsonify(res_obj)
 
 
 if __name__ == '__main__':
