@@ -96,16 +96,17 @@
           <b-form-group
             id="form-sex-group"
             label="Sex"
-            label-for="form-sex-input"
+            label-for="form-sex-select"
           >
-            <b-form-input
-              id="form-sex-input"
+            <b-form-select
+              id="form-sex-select"
               type="text"
               v-model="addStudentForm.sex"
-              required
-              placeholder="Enter Sex"
             >
-            </b-form-input>
+              <option :value="null" disabled>Please select gender</option>
+              <option value="Male" selected="selected">Male</option>
+              <option value="Female">Female</option>
+            </b-form-select>
           </b-form-group>
 
           <b-form-group
@@ -170,16 +171,16 @@
           <b-form-group
             id="form-sex-group"
             label="Sex"
-            label-for="form-sex-input"
+            label-for="form-sex-dropdown"
           >
-            <b-form-input
-              id="form-sex-input"
-              type="text"
+            <b-form-select
+              id="form-sex-dropdown"
               v-model="editForm.sex"
-              required
-              placeholder="Enter Sex"
+              text="Select Sex"
             >
-            </b-form-input>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </b-form-select>
           </b-form-group>
 
           <b-form-group
@@ -242,7 +243,7 @@ export default {
       addStudentForm: {
         id: "",
         name: "",
-        sex: "",
+        sex: "null",
         age: "",
         faculty: "",
       },
@@ -306,7 +307,7 @@ export default {
       this.initStudentForm();
     },
     onReset() {
-      console.log("reset");
+      this.initStudentForm();
     },
     delStudentFunc(payload, id) {
       deleteStudent(payload, id).then((res) => {
@@ -334,7 +335,7 @@ export default {
       this.updateStudentFunc(payload, this.editForm.id);
     },
     onResetUpdate() {
-      console.log("11");
+      this.initStudentForm();
     },
   },
   created() {
