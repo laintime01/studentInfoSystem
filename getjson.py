@@ -15,7 +15,6 @@ class GetJsonData:
 
     def json_del(self, key, *json_file):
         json_dict = self.json_data('todo.json')
-        print("key--->" + key)
         json_data = json_dict.pop(key)
         print(json_data, 'delete success')
         with open('todo.json', mode='w', encoding='utf-8') as jf:
