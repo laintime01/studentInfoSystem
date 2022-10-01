@@ -104,12 +104,12 @@ export default {
       const payload = {
         task: this.todo_text,
       };
-      console.log(payload);
       this.addList(payload);
     },
     addList(payload) {
       addTodoList(payload).then(() => {
         this.fetchTodoListFunc();
+        this.todo_text = "";
       });
     },
     fetchTodoListFunc() {
