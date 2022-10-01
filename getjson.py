@@ -11,11 +11,12 @@ class GetJsonData:
         json_data = self.json_data()
         json_data.update(dict_new)
         with open('todo.json', mode='w', encoding='utf-8') as jf:
-            json.dump(json_data, jf, indent=2, sort_keys=True, ensure_ascii=False)
+            json.dump(json_data, jf, indent=2, sort_keys=False, ensure_ascii=False)
 
     def json_del(self, key, *json_file):
         json_dict = self.json_data('todo.json')
+        print("key--->" + key)
         json_data = json_dict.pop(key)
         print(json_data, 'delete success')
         with open('todo.json', mode='w', encoding='utf-8') as jf:
-            json.dump(json_dict, jf, indent=2, sort_keys=True, ensure_ascii=False)
+            json.dump(json_dict, jf, indent=2, sort_keys=False, ensure_ascii=False)

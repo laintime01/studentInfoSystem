@@ -15,3 +15,10 @@ export function addTodoList(data) {
     data,
   });
 }
+
+export function deleteTodoList(id) {
+  return request({
+    url: "/todolist/" + id,
+    method: "delete",
+  });
+}

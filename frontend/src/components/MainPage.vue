@@ -65,9 +65,9 @@
                         <button
                           type="button"
                           class="btn btn-danger"
-                          @click="onDeleteTask(task)"
+                          @click="onDeleteTask(index)"
                         >
-                          Delete
+                          Done
                         </button>
                       </div>
                     </td>
@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import { addTodoList, fetchTodoList } from "@/api/todolist";
+import { addTodoList, deleteTodoList, fetchTodoList } from "@/api/todolist";
 
 export default {
   name: "MainPage",
@@ -117,8 +117,15 @@ export default {
         this.todolists = res.data.todolist;
       });
     },
-    todocheck() {
-      console.log("check");
+    delete_task(id) {
+      deleteTodoList(id).then((res) => {
+        this.fetchTodoListFunc();
+        this.message = res.data.message;
+      });
+    },
+    onDeleteTask(index) {
+      console.log(index);
+      this.delete_task(index);
     },
   },
   created() {

@@ -153,6 +153,15 @@ def text_read(path='todo.json'):
     return jsonify(res_obj)
 
 
+@app.route('/todolist/<task_key>', methods=['DELETE'])
+def del_task(task_key):
+    res_object = {'status': 'success'}
+    delete_task = GetJsonData()
+    delete_task.json_del(task_key)
+    res_object['message'] = 'task done'
+    return jsonify(res_object)
+
+
 if __name__ == '__main__':
     app.run(debug=True, host="localhost", port=8900)
     with app.app_context():
