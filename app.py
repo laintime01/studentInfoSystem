@@ -3,8 +3,8 @@ from flask_cors import CORS
 import uuid
 # pip install flask-sqlalchemy
 from model import db, Teachers, Students
-import re
 import json
+from getjson import GetJsonData
 
 app = Flask(__name__)
 
@@ -108,7 +108,7 @@ def del_student(student_id):
 
 @app.route('/students/<student_id>', methods=['PUT', 'DELETE'])
 def update_del_student(student_id):
-    res_obj = {'status' : 'success'}
+    res_obj = {'status': 'success'}
     if request.method == 'PUT':
         post_data = request.get_json()
         Students.query.filter(Students.id == student_id).update({
@@ -131,36 +131,25 @@ def update_del_student(student_id):
 def test_write(path='todo.json', mode='a'):
     res_obj = {'status': 'success'}
     import _locale
-    _locale._getdefaultlocale = (lambda *args:['zh_CN', 'utf8'])
+    _locale._getdefaultlocale = (lambda *args: ['zh_CN', 'utf8'])
     post_data = request.get_json()
-    print(post_data)
     task = post_data.get('task')
-    f = open(path, mode)
-    todolist_dict = dict({task: 'yes'})
-    todolist_dict = json.dumps(todolist_dict)
-    f.write(str(todolist_dict) + ",")
-    f.close()
+    new_dict = {uuid.uuid4().hex: task}
+    update_json = GetJsonData()
+    update_json.json_update(new_dict)
     res_obj['message'] = "task added"
     return res_obj
 
 
 # read
 @app.route('/todolist', methods=['GET'])
-def text_read(path='todo.json', mode='readlines'):
+def text_read(path='todo.json'):
     res_obj = {'status': 'success'}
     import _locale
     _locale._getdefaultlocale = (lambda *args: ['zh_CN', 'utf8'])
-    f = open(path, 'r')
-    if mode == 'readlines':
-        line = f.readlines()
-        todolist = []
-        for i in line:
-            i = re.sub('\n', '', i)
-            todolist.append(i)
-    else:
-        todolist = f.read()
-    res_obj['todolist'] = todolist
-    f.close()
+    with open(path, 'r') as jf:
+        jd = json.load(jf)
+    res_obj['todolist'] = jd
     return jsonify(res_obj)
 
 

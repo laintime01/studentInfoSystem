@@ -50,13 +50,30 @@
               <br />
             </div>
             <div style="margin-top: 30px">
-              <b-form-checkbox
-                id="todoCheckbox"
-                value="checked"
-                style="display: inline-block; margin-right: 200px; float: left"
-                >Learn Vue</b-form-checkbox
-              >
-              <b-button style="display: inline-block">Done</b-button>
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Task</th>
+                    <th scope="col">Act</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(task, index) in todolists" :key="index">
+                    <td>{{ task }}</td>
+                    <td>
+                      <div class="btn-group" role="group">
+                        <button
+                          type="button"
+                          class="btn btn-danger"
+                          @click="onDeleteTask(task)"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
