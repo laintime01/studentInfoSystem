@@ -3,12 +3,21 @@ import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import TeacherView from "@/views/TeacherView";
 import StudentView from "@/views/StudentView";
+import LoginView from "@/views/LoginView";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
+    name: "login",
+    component: LoginView,
+    meta: {
+      hideNavbar: true,
+    },
+  },
+  {
+    path: "/home",
     name: "home",
     component: HomeView,
   },
