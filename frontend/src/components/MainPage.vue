@@ -94,6 +94,11 @@ export default {
     return {
       todo_text: "",
       todolists: "",
+      registerForm: {
+        username: "",
+        password: "",
+        password2: "",
+      },
     };
   },
   props: {

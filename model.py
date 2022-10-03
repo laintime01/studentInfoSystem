@@ -44,6 +44,17 @@ class Students(db.Model):
         self.sex = sex
         self.age = age
 
+
+@dataclass
+class Users(db.Model):
+    __tablename__ = 'users'
+    id: int
+    username: str
+    password: str
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(20), nullable=False)
+    password = db.Column(db.String(20), nullable=False)
+
     def __repr__(self):
         return '<Student %r>' % (self.name, self.faculty, self.sex, self.age)
-

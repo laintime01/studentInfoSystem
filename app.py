@@ -2,17 +2,19 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import uuid
 # pip install flask-sqlalchemy
+from login import login_routes
 from model import db, Teachers, Students
 import json
 from getjson import GetJsonData
 
 app = Flask(__name__)
-
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:@localhost/sis_db"
 db.init_app(app)
 
+
 app.config.from_object(__name__)
 CORS(app, resource={r"/*": {'origins': "*"}})
+app.register_blueprint(login_routes, url_prefix='/login')
 
 
 # route
