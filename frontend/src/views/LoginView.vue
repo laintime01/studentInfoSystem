@@ -97,6 +97,8 @@
 </template>
 
 <script>
+import { addUser } from "@/api/login";
+
 export default {
   name: "LoginView",
   computed: {
@@ -128,10 +130,21 @@ export default {
     },
     onSubmitRegi(event) {
       event.preventDefault();
-      alert(JSON.stringify(this.registerForm));
+      const payload = {
+        username: this.registerForm.username,
+        password: this.registerForm.password,
+      };
+      this.registerUser(payload);
+      this.$refs.registerModal.hide();
+      alert("registered!");
     },
     onResetRegi() {
       console.log("register reset");
+    },
+    registerUser(data) {
+      addUser(data).then((res) => {
+        console.log(res);
+      });
     },
   },
 };

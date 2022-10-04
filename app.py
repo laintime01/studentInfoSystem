@@ -14,7 +14,7 @@ db.init_app(app)
 
 app.config.from_object(__name__)
 CORS(app, resource={r"/*": {'origins': "*"}})
-app.register_blueprint(login_routes, url_prefix='/login')
+app.register_blueprint(login_routes, url_prefix='/')
 
 
 # route
