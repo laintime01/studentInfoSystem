@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from dataclasses import dataclass
+from passlib.hash import pbkdf2_sha1 as sha1
 
 db = SQLAlchemy()
 
@@ -55,3 +56,7 @@ class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
+
+    @staticmethod
+    def verify_hash(password, hash):
+        return sha1.verify(password, hash)
