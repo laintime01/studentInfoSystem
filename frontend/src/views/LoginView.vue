@@ -1,6 +1,11 @@
 <template>
   <b-jumbotron header="Login" lead="welcome to student information system">
     <div class="container">
+      <div>
+        <b-alert variant="success" v-if="showMessage" show>
+          {{ message }}
+        </b-alert>
+      </div>
       <b-form @submit="onSubmit">
         <b-form-group
           id="username-group"
@@ -97,7 +102,7 @@
 </template>
 
 <script>
-import { addUser } from "@/api/login";
+import { addUser, userLogin } from "@/api/login";
 
 export default {
   name: "LoginView",
@@ -109,6 +114,8 @@ export default {
   data() {
     return {
       username: "",
+      message: "",
+      showMessage: false,
       loginForm: {
         username: "",
         password: "",
@@ -121,9 +128,26 @@ export default {
     };
   },
   methods: {
-    onSubmit(event) {
+    loginFunction(data) {
+      userLogin(data)
+        .then((res) => {
+          localStorage.setItem("token", res.data.access_token);
+          if (res.status == 201) {
+            this.$router.push("/home");
+          }
+        })
+        .catch((e) => {
+          this.message = e.response.statusText;
+          this.showMessage = true;
+        });
+    },
+    async onSubmit(event) {
       event.preventDefault();
-      alert(JSON.stringify(this.loginForm));
+      const logindata = {
+        username: this.loginForm.username,
+        password: this.loginForm.password,
+      };
+      await this.loginFunction(logindata);
     },
     onReset() {
       console.log("reset");

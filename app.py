@@ -6,9 +6,12 @@ from login import login_routes
 from model import db, Teachers, Students
 import json
 from getjson import GetJsonData
+from flask_jwt_extended import JWTManager, jwt_required
 
 app = Flask(__name__)
+jwt = JWTManager(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:@localhost/sis_db"
+app.config['JWT_SECRET_KEY'] = "supper-secret-yo"
 db.init_app(app)
 
 
@@ -83,6 +86,7 @@ def get_student_slogan():
 
 
 @app.route('/students', methods=['GET', 'POST'])
+@jwt_required()
 def add_update_student():
     res_obj = {'status': 'success'}
     if request.method == 'POST':
