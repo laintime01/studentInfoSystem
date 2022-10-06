@@ -7,6 +7,13 @@ import store from "./store/index";
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 
+router.beforeEach((to, from, next) => {
+  if (localStorage.getItem("token")) {
+    next();
+    console.log("next!");
+  }
+});
+
 new Vue({
   router,
   store,

@@ -10,7 +10,7 @@
         >Hao's Page</a
       >.
     </p>
-    <p>welcome {{ userinfo }}</p>
+    <p>welcome back, {{ userinfo }}</p>
     <div class="jumbotron vertical-center">
       <div class="container">
         <link
@@ -126,9 +126,9 @@ export default {
       });
     },
     getUsername() {
-      // const current_user = JSON.parse(localStorage.getItem("user"));
-      // this.userinfo = current_user.name;
-      console.log(localStorage.getItem("name"));
+      const current_user = localStorage.getItem("name");
+      this.userinfo = current_user;
+      console.log(current_user);
     },
     delete_task(id) {
       deleteTodoList(id).then((res) => {
