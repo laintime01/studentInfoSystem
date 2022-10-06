@@ -36,7 +36,8 @@ def login_authenticate():
             refresh_token = create_refresh_token(identity=data.get('username'))
             return response_with(resp.SUCCESS_201,
                                  value={'message': 'Logged in as {}'.format(current_user.username),
-                                        "access_token": access_token, "refresh_token": refresh_token})
+                                        "access_token": access_token, "refresh_token": refresh_token,
+                                        "user": current_user.username})
         else:
             return resp.response_with(resp.UNAUTHORIZED_403)
     except Exception as error:

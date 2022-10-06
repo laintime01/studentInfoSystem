@@ -103,6 +103,7 @@
 
 <script>
 import { addUser, userLogin } from "@/api/login";
+import store from "../store/index";
 
 export default {
   name: "LoginView",
@@ -131,14 +132,19 @@ export default {
     loginFunction(data) {
       userLogin(data)
         .then((res) => {
-          localStorage.setItem("token", res.data.access_token);
-          if (res.status == 201) {
+          if (res.status === 201) {
+            localStorage.setItem("token", res.data.access_token);
+            localStorage.setItem("name", res.data.user);
+            store.dispatch("user", res.data.user);
             this.$router.push("/home");
           }
         })
         .catch((e) => {
-          this.message = e.response.statusText;
-          this.showMessage = true;
+          console.log(e);
+          if (e.response) {
+            this.message = e.response.statusText;
+            this.showMessage = true;
+          }
         });
     },
     async onSubmit(event) {

@@ -10,6 +10,7 @@
         >Hao's Page</a
       >.
     </p>
+    <p>welcome {{ userinfo }}</p>
     <div class="jumbotron vertical-center">
       <div class="container">
         <link
@@ -87,12 +88,14 @@
 
 <script>
 import { addTodoList, deleteTodoList, fetchTodoList } from "@/api/todolist";
+import { mapGetters } from "vuex";
 
 export default {
   name: "MainPage",
   data() {
     return {
       todo_text: "",
+      userinfo: "",
       todolists: "",
       registerForm: {
         username: "",
@@ -122,6 +125,11 @@ export default {
         this.todolists = res.data.todolist;
       });
     },
+    getUsername() {
+      // const current_user = JSON.parse(localStorage.getItem("user"));
+      // this.userinfo = current_user.name;
+      console.log(localStorage.getItem("name"));
+    },
     delete_task(id) {
       deleteTodoList(id).then((res) => {
         this.fetchTodoListFunc();
@@ -133,8 +141,12 @@ export default {
       this.delete_task(index);
     },
   },
+  computed: {
+    ...mapGetters(["user"]),
+  },
   created() {
     this.fetchTodoListFunc();
+    this.getUsername();
   },
 };
 </script>

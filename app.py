@@ -86,7 +86,6 @@ def get_student_slogan():
 
 
 @app.route('/students', methods=['GET', 'POST'])
-@jwt_required()
 def add_update_student():
     res_obj = {'status': 'success'}
     if request.method == 'POST':
