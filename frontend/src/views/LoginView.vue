@@ -136,7 +136,7 @@ export default {
             localStorage.setItem("token", res.data.access_token);
             localStorage.setItem("name", res.data.user);
             store.dispatch("user", res.data.user);
-            this.$router.push("/home");
+            this.$router.push("/");
           }
         })
         .catch((e) => {
