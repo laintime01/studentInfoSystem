@@ -5,10 +5,40 @@
       <router-link to="/student">Student</router-link> |
       <router-link to="/teacher">Teacher</router-link> |
       <router-link to="/about">About</router-link>
+      <b-button
+        variant="outline-primary"
+        style="float: right"
+        v-on:click="this.logout"
+        v-show="isLogin"
+        >logout</b-button
+      >
     </nav>
     <router-view />
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      isLogin: false,
+    };
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("name");
+      this.$router.push("/login");
+    },
+    getLoginStatus() {
+      this.isLogin = !!localStorage.getItem("token");
+    },
+  },
+  created() {
+    this.getLoginStatus();
+  },
+};
+</script>
 
 <style>
 #app {
