@@ -48,4 +48,11 @@ const router = new VueRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  if (localStorage.getItem("token")) {
+    next();
+    console.log("next!");
+  }
+});
+
 export default router;
