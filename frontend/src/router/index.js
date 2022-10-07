@@ -9,27 +9,37 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
+    path: "/login",
     name: "login",
     component: LoginView,
     meta: {
       hideNavbar: true,
+      auth: false,
     },
   },
   {
-    path: "/home",
+    path: "/",
     name: "home",
     component: HomeView,
+    meta: {
+      auth: true,
+    },
   },
   {
     path: "/student",
     name: "student",
     component: StudentView,
+    meta: {
+      auth: true,
+    },
   },
   {
     path: "/teacher",
     name: "teacher",
     component: TeacherView,
+    meta: {
+      auth: true,
+    },
   },
   {
     path: "/about",
@@ -37,6 +47,9 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
+    meta: {
+      auth: true,
+    },
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
   },
@@ -49,9 +62,12 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (localStorage.getItem("token")) {
+  if (!localStorage.getItem("token")) {
+    next("/login");
+  } else if (to.path === "/login" && localStorage.getItem("token")) {
+    next("/");
+  } else {
     next();
-    console.log("next!");
   }
 });
 
